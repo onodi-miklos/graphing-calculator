@@ -1,0 +1,39 @@
+
+{
+  "name": "empty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/dist/app.js",
+  "scripts": {
+    "build:backend": "tsc -p backend",
+    "build:frontend": "tsc -p backend/frontend",
+    "watch:backend": "tsc --watch -p backend",
+    "watch:frontend": "tsc --watch -p backend/frontend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start":"npm run build && node backend/dist/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "@types/express": "^4.17.21",
+    "nodemon": "^3.1.11",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@onodi-miklos/logger": "^1.1.1",
+    "@onodi-miklos/math-utils": "^1.2.2",
+    "axios": "^1.13.4",
+    "bcrypt": "^6.0.0",
+    "bootstrap": "^5.3.8",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^6.19.0",
+    "mongoose": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.16.0",
+    "tailwind": "^4.0.0"
+  }
+}

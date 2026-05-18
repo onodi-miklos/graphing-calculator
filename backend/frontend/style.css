@@ -1,0 +1,43 @@
+body {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+}
+#plane {
+  margin: 0;
+  width: 95vh;
+  height: 95vh;
+  border: 1px solid black;
+  /* overflow: scroll; */
+
+  display: grid;
+  grid-template-columns: repeat(21, 1fr);
+  grid-template-rows: repeat(21, 1fr);
+}
+#plane .grid {
+  box-sizing: border-box;
+  border: 1px solid rgba(128, 128, 128, 0.296);
+  font-family: Poppins, Verdana, Helvetica, Arial, sans-serif;
+  text-align: center;
+  font-weight: 600;
+}
+#plane .grid[data-x="1"],
+#plane .grid[data-y="1"]
+{
+  border: none;
+}
+button {
+  width: 25%;
+  height: 30px;
+  margin-top: -15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 3px solid rgba(206, 206, 206, 0.725);
+  font-family: Poppins, Verdana, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
