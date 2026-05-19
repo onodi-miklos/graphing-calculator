@@ -1,6 +1,15 @@
 body {
   padding: 0;
   display: flex;
+  flex-direction: row;
+}
+@media(max-width: 1000px){
+  body{
+    flex-direction: column
+  }
+}
+#planeContainer {
+  display: flex;
   justify-content: center;
   align-items: right;
   overflow: hidden;
@@ -24,11 +33,7 @@ body {
   text-align: center;
   font-weight: 600;
 }
-#plane .grid[data-x="-9"],
-#plane .grid[data-y="1"]
-{
-  border: none;
-}
+
 button {
   width: 25%;
   height: 30px;
@@ -37,4 +42,9 @@ button {
   font-family: Poppins, Verdana, Helvetica, Arial, sans-serif;
   font-weight: 600;
   cursor: pointer;
+}
+
+
+#actives{
+  display: flex
 }

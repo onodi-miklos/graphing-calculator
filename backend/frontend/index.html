@@ -5,16 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Graphing Calculator</title>
   <link rel="stylesheet" href="./style.css">
-  <script src="./dist/index.js" defer></script>
+  <script src="./dist/index.js" defer type="module"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
   </style>
 </head>
 <body>
-    <div class="btnContainer">
+  <div id="planeContainer">
+    <div id="btnContainer">
       <button id="newExpr">New function</button>
       <button id="clearBtn">Clear</button>
     </div>
     <div id="plane"></div>
+  </div>
+
+  <div id="actives">
+    
+  </div>
 </body>
 </html>
