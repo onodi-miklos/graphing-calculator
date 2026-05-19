@@ -1,10 +1,11 @@
-function createPlane():void{
-const plane: HTMLElement|null = document.getElementById('plane') as HTMLDivElement
-
 const yMax: number = 11;
 const yMin: number = -10;
 const xMin: number = -9;
 const xMax: number = 11;
+
+function createPlane():void{
+const plane: HTMLElement|null = document.getElementById('plane') as HTMLDivElement
+
 
 // max-min+1
 
@@ -29,4 +30,4 @@ for ( let i: number = xMin; i <= xMax; i++ ) {
 }}
 }
 
-export { createPlane };
+export { createPlane, xMax, xMin };

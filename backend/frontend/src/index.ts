@@ -1,4 +1,4 @@
-import { createPlane } from './plane.js'
+import { createPlane, xMin, xMax } from './plane.js'
 createPlane()
 import { evaluateExpression } from './calculate.js';
 
@@ -7,7 +7,7 @@ let numberOfFunctions: number = 0;
 
 function graph(func: (string|null)):void{
   if (func) {
-  for (let i: number = -9 + 1; i <=11; i++) {
+  for (let i: number = xMin-1 + 1; i <=xMax; i++) {
     // const x:number = i
     const y:number = Math.ceil(evaluateExpression(func, {x: i - 1}))
     const el: HTMLDivElement | null = document.querySelector(
