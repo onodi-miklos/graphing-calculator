@@ -1,15 +1,20 @@
 const plane: HTMLElement|null = document.getElementById('plane') as HTMLDivElement
 
 
+
+
 for (let j: number = 21; j >=1; j--) {
-for ( let i: number = 1; i <= 21; i++ ) {
+for ( let i: number = -9; i <= 11; i++ ) {
       const grid:HTMLDivElement = document.createElement('div')
       
       if (j === 1) {
         grid.textContent = String( i-1 )
       }
-      if (i === 1) {
+      if (i === -9) {
         grid.textContent = String( j-1 )
+      }
+      if (i === -9 && j === 1) {
+        grid.textContent = ""
       }
 
       grid.classList.add('grid')
@@ -19,6 +24,10 @@ for ( let i: number = 1; i <= 21; i++ ) {
 
       if (plane) plane.append(grid)
 }}
+
+
+
+let numberOfFunctions: number = 0;
 
 
 function evaluateExpression(
@@ -69,32 +78,67 @@ function evaluateExpression(
   // Kiértékelés
   return Function(`"use strict"; return (${expr})`)();
 }
-function graph():void{
-  if (expr) {
-  for (let i: number = 1 + 1; i <=21; i++) {
-    const y:number = Math.ceil(evaluateExpression(expr, {x: i - 1}))
+function graph(func: (string|null)):void{
+  if (func) {
+  for (let i: number = -9 + 1; i <=11; i++) {
+    const x:number = i
+    const y:number = Math.ceil(evaluateExpression(func, {x: i - 1}))
     const el: HTMLDivElement | null = document.querySelector(
       `div[data-c='{"x":${i},"y":${y + 1}}']`
     );
     let isPlaceholder: boolean
-    if (y<1){isPlaceholder = true}else{isPlaceholder = false};
+    if (y<1||x<-10){isPlaceholder = true}else{isPlaceholder = false};
     if (el && !isPlaceholder) {
-    el.style.background = "black"
-}}}}
+      switch(numberOfFunctions){
+        case 1:
+          el.style.background = "blue"
+          break
+        case 2:
+          el.style.background = "red"
+          break
+        case 3:
+          el.style.background = "black"
+          break
+        case 4:
+          el.style.background = "green"
+          break
+        case 5:
+          el.style.background = "aqua"
+          break
+        case 6:
+          el.style.background = "yellow"
+          break
+        default:
+          numberOfFunctions = 1
+          el.style.background = "blue"
+          break
+
+}}}}}
 function clear(): void {
   const els = document.querySelectorAll<HTMLDivElement>('.grid')
   els.forEach(e => {
     e.style.background = 'white'
   })
+  numberOfFunctions = 1;
 }
+
 let expr: string | null = window.prompt('enter a function')
-const button = document.querySelector<HTMLButtonElement>('button')
+if (expr){numberOfFunctions++}
+const button = document.querySelector<HTMLButtonElement>('#newExpr')
 if (button) {
   button.onclick = function():void{
-    expr = window.prompt('enter a function')
-    clear()
-    graph()
+    let newExpr:string|null
+    newExpr = window.prompt('enter a function')
+    // clear()
+    graph(newExpr)
+    if (newExpr) {
+      numberOfFunctions++
+    }
   }
 }
+const clearBtn: HTMLButtonElement | null = document.querySelector('#clearBtn')
+if (clearBtn) {
+  clearBtn.onclick = clear
+}
 clear()
-graph()
+graph(expr)
