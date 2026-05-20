@@ -15,6 +15,14 @@ body {
   overflow: hidden;
   flex-direction: column;
 }
+#btnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#btnContainer button {
+  width: 49%;
+}
 #plane {
   margin: 0;
   width: 95vh;
@@ -45,6 +53,43 @@ button {
 }
 
 
+
 #actives{
-  display: flex
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: min(50%);
+}
+.func {
+  width: 100%;
+  font-family: Poppins, Verdana, Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.func h2 {
+  margin-left: max(50px);
+}
+.func .delete {
+  font-family: Poppins, Verdana, Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  text-align: center;
+  background: hsl(0, 38%, 62%);
+  border: none;
+  color: white;
+  height: max(50px);
+  width: auto;
+  aspect-ratio: 1;
+  margin-right: max(50px);
+  box-sizing: border-box
+}
+.func .delete:hover {
+  background: hsl(0, 38%, 42%);
+  border: 5px solid hsl(0, 38%, 62%);
+  transition: .2s background ease;
+}
+.func .delete:active {
+  background: hsl(0, 38%, 52%);
+  transition: .1s background ease;
 }
