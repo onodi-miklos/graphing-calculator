@@ -18,8 +18,23 @@ const letters: string[] = [
   "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
 ];
 
-let numberOfFunctions = 0;
 let functions: GraphFunction[] = [];
+
+function nextColorIndex(): number {
+  const used = new Set(functions.map((f) => colorStringToNumber(f.color)));
+  for (let i = 0; i < COLORS.length; i++) {
+    if (!used.has(i)) return i;
+  }
+  return functions.length % COLORS.length;
+}
+
+function nextName(): string {
+  const used = new Set(functions.map((f) => f.name));
+  for (const letter of letters) {
+    if (!used.has(letter)) return letter;
+  }
+  return letters[functions.length % letters.length];
+}
 
 const activesContainer: HTMLDivElement | null =
   document.querySelector("#actives");
@@ -84,7 +99,7 @@ function graph(
   if (!func) return;
 
   const slot =
-    colorIndex >= 0 ? colorIndex % COLORS.length : numberOfFunctions % COLORS.length;
+    colorIndex >= 0 ? colorIndex % COLORS.length : nextColorIndex();
   let color: string = COLORS[slot];
 
   for (let i = xMin; i <= xMax; i++) {
@@ -107,7 +122,7 @@ function addActiveFunction(
   colour: string,
   userName = "",
 ): void {
-  const name = userName || letters[numberOfFunctions % letters.length];
+  const name = userName || nextName();
   functions.push({ name, fn, color: colour });
   saveFunctionsToStorage();
 
@@ -126,7 +141,6 @@ function redrawAll(): void {
 function removeFunction(index: number): void {
   if (index < 0 || index >= functions.length) return;
   functions.splice(index, 1);
-  numberOfFunctions = functions.length;
   saveFunctionsToStorage();
   rebuildActivesPanel();
   redrawAll();
@@ -147,7 +161,6 @@ function graphAll(): void {
       return true;
     });
 
-    numberOfFunctions = functions.length;
     saveFunctionsToStorage();
     rebuildActivesPanel();
     redrawAll();
@@ -158,7 +171,6 @@ function graphAll(): void {
 
 function clear(): void {
   clearGrid();
-  numberOfFunctions = 0;
   functions = [];
   if (activesContainer) {
     activesContainer.innerHTML = "";
@@ -171,9 +183,6 @@ if (button) {
   button.onclick = (): void => {
     const newExpr = window.prompt("enter a function");
     graph(newExpr);
-    if (newExpr) {
-      numberOfFunctions++;
-    }
   };
 }
 
