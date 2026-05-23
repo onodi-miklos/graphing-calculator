@@ -1,4 +1,5 @@
-import { createPlane, xMin, xMax } from "./plane.js";
+import {round} from './round.js'
+import { createPlane, xMin, xMax, yIter } from "./plane.js";
 import { evaluateExpression } from "./calculate.js";
 
 createPlane();
@@ -103,7 +104,10 @@ function graph(
   let color: string = COLORS[slot];
 
   for (let i = xMin; i <= xMax; i++) {
-    const y = evaluateExpression(func, { x: i - 1 });
+    const y = 
+    round(
+    evaluateExpression(func, { x: i - 1 })
+    , yIter-1)
     const el = document.querySelector<HTMLDivElement>(
       `div[data-c='{"x":${i},"y":${y + 1}}']`,
     );

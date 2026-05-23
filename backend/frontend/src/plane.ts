@@ -2,14 +2,16 @@ const yMax: number = 11;
 const yMin: number = -10;
 const xMin: number = -9;
 const xMax: number = 11;
+const xIter: number = 1;
+const yIter: number = 1;
 
 // max-min+1
 
 function createPlane():void{
 const plane: HTMLElement|null = document.getElementById('plane') as HTMLDivElement
 
-for (let j: number = yMax; j > yMin; j--) {
-for ( let i: number = xMin; i <= xMax; i++ ) {
+for (let j: number = yMax; j > yMin; j -= yIter) {
+for ( let i: number = xMin; i <= xMax; i += xIter ) {
       const grid:HTMLDivElement = document.createElement('div')
       
       if (j === 1) {
@@ -28,4 +30,4 @@ for ( let i: number = xMin; i <= xMax; i++ ) {
 }}
 }
 
-export { createPlane, xMax, xMin };
+export { createPlane, xMax, xMin, yIter };
