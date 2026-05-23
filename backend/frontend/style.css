@@ -29,18 +29,28 @@ body {
   width: 95vh;
   height: 95vh;
   border: 1px solid black;
-  /* overflow: scroll; */
-
+  /* column/row counts are set in createPlane() from xIter / yIter */
   display: grid;
-  grid-template-columns: repeat(21, 1fr);
-  grid-template-rows: repeat(21, 1fr);
 }
 #plane .grid {
   box-sizing: border-box;
-  border: 1px solid rgba(128, 128, 128, 0.296);
+  border: 1px solid rgba(128, 128, 128, 0.15);
   font-family: Poppins, Verdana, Helvetica, Arial, sans-serif;
   text-align: center;
   font-weight: 600;
+  font-size: clamp(0.15rem, 0.75vmin, 0.45rem);
+  min-width: 0;
+  min-height: 0;
+}
+#plane .grid.axis-x,
+#plane .grid.axis-y {
+  background-color: rgba(128, 128, 128, 0.08);
+}
+#plane .grid.axis-label {
+  font-size: clamp(0.28rem, 1vmin, 0.58rem);
+  font-weight: 700;
+  color: #333;
+  z-index: 1;
 }
 
 button {

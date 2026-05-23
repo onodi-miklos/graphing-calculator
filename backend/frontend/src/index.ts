@@ -1,6 +1,13 @@
-import {round} from './round.js'
-import { createPlane, xMin, xMax, yIter } from "./plane.js";
-import { evaluateExpression } from "./calculate.js";
+// import {round} from './round.js'
+import {
+  createPlane,
+  gridColumnCount,
+  gridRowCount,
+  worldXAtCol,
+  rowAtWorldY,
+  snapWorldY,
+} from "./plane.js";
+import { evaluateExpression, isValidExpression } from "./calculate.js";
 
 createPlane();
 
@@ -98,18 +105,26 @@ function graph(
   skipSidebar = false,
 ): void {
   if (!func) return;
+  if (!isValidExpression(func)) {
+    window.alert("That is not a valid function. Use x, numbers, operators, and supported math functions.");
+    return;
+  }
 
   const slot =
     colorIndex >= 0 ? colorIndex % COLORS.length : nextColorIndex();
   let color: string = COLORS[slot];
 
-  for (let i = xMin; i <= xMax; i++) {
-    const y = 
-    round(
-    evaluateExpression(func, { x: i - 1 })
-    , yIter-1)
+  const cols = gridColumnCount();
+  const rows = gridRowCount();
+
+  for (let col = 0; col < cols; col++) {
+    const worldX = worldXAtCol(col);
+    const snappedY = snapWorldY(evaluateExpression(func, { x: worldX }));
+    const row = rowAtWorldY(snappedY);
+    if (row < 0 || row >= rows) continue;
+
     const el = document.querySelector<HTMLDivElement>(
-      `div[data-c='{"x":${i},"y":${y + 1}}']`,
+      `div.grid[data-col="${col}"][data-row="${row}"]`,
     );
     if (el) {
       color = applyColorToCell(el, slot);
@@ -160,7 +175,9 @@ function graphAll(): void {
 
     const seen = new Set<string>();
     functions = parsed.filter((entry) => {
-      if (!entry?.fn || seen.has(entry.fn)) return false;
+      if (!entry?.fn || seen.has(entry.fn) || !isValidExpression(entry.fn)) {
+        return false;
+      }
       seen.add(entry.fn);
       return true;
     });

@@ -21,6 +21,11 @@ const UNARY_FUNCTIONS: Readonly<Record<string, (x: number) => number>> = {
   exp: Math.exp,
   ln: Math.log,
   log: (x) => Math.log10(x),
+  absolute: (x) => {
+    if (x === 0){return 0}
+    else if (x > 0){return x}
+    else {return -x}
+  }
 };
 
 const BINARY_FUNCTIONS: Readonly<Record<string, (a: number, b: number) => number>> = {
@@ -94,13 +99,27 @@ function tokenize(source: string): Token[] | null {
   return tokens;
 }
 
+const GRAPH_VARIABLES = new Set(["x"]);
+
 class Parser {
   private index = 0;
+  private invalid = false;
 
   constructor(
     private readonly tokens: Token[],
     private readonly variables: Record<string, number>,
   ) {}
+
+  validate(): boolean {
+    this.invalid = false;
+    this.index = 0;
+    this.parseExpression();
+    return !this.invalid && this.isAtEnd();
+  }
+
+  private markInvalid(): void {
+    this.invalid = true;
+  }
 
   parse(): number {
     const value = this.parseExpression();
@@ -185,7 +204,9 @@ class Parser {
 
       if (name in this.variables) return this.variables[name];
       if (name in CONSTANTS) return CONSTANTS[name];
+      if (GRAPH_VARIABLES.has(name)) return 0;
 
+      this.markInvalid();
       return NaN;
     }
 
@@ -217,6 +238,7 @@ class Parser {
       }
     }
 
+    this.markInvalid();
     return NaN;
   }
 
@@ -278,4 +300,18 @@ function evaluateExpression(
   return new Parser(tokens, normalizedVars).parse();
 }
 
-export { evaluateExpression };
+/**
+ * Returns true when the expression is syntactically valid for graphing
+ * (known operators, functions, constants, and the variable `x` only).
+ */
+function isValidExpression(expression: string): boolean {
+  const trimmed = expression.trim();
+  if (!trimmed) return false;
+
+  const tokens = tokenize(trimmed);
+  if (!tokens) return false;
+
+  return new Parser(tokens, {}).validate();
+}
+
+export { evaluateExpression, isValidExpression };

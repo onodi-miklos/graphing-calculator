@@ -1,33 +1,101 @@
-const yMax: number = 11;
-const yMin: number = -10;
-const xMin: number = -9;
-const xMax: number = 11;
-const xIter: number = 1;
-const yIter: number = 1;
+const WORLD_X_MIN = -10;
+const WORLD_X_MAX = 10;
+const WORLD_Y_MIN = -10;
+const WORLD_Y_MAX = 10;
+const xIter = 0.2;
+const yIter = 0.2;
 
-// max-min+1
-
-function createPlane():void{
-const plane: HTMLElement|null = document.getElementById('plane') as HTMLDivElement
-
-for (let j: number = yMax; j > yMin; j -= yIter) {
-for ( let i: number = xMin; i <= xMax; i += xIter ) {
-      const grid:HTMLDivElement = document.createElement('div')
-      
-      if (j === 1) {
-        grid.textContent = String( i-1 )
-      }
-      if (i === 1) {
-        grid.textContent = String( j-1 )
-      }
-
-      grid.classList.add('grid')
-      grid.dataset.c = JSON.stringify({x: i, y: j})
-      grid.dataset.x = String(i)
-      grid.dataset.y = String(j)
-
-      if (plane) plane.append(grid)
-}}
+function gridColumnCount(): number {
+  return Math.round((WORLD_X_MAX - WORLD_X_MIN) / xIter) + 1;
 }
 
-export { createPlane, xMax, xMin, yIter };
+function gridRowCount(): number {
+  return Math.round((WORLD_Y_MAX - WORLD_Y_MIN) / yIter) + 1;
+}
+
+function worldXAtCol(col: number): number {
+  return WORLD_X_MIN + col * xIter;
+}
+
+function worldYAtRow(row: number): number {
+  return WORLD_Y_MAX - row * yIter;
+}
+
+function colAtWorldX(worldX: number): number {
+  return Math.round((worldX - WORLD_X_MIN) / xIter);
+}
+
+function rowAtWorldY(worldY: number): number {
+  return Math.round((WORLD_Y_MAX - worldY) / yIter);
+}
+
+function snapWorldY(worldY: number): number {
+  return Math.round(worldY / yIter) * yIter;
+}
+
+function isNearInteger(n: number): boolean {
+  return Math.abs(n - Math.round(n)) < 1e-6;
+}
+
+function formatAxisLabel(n: number): string {
+  return String(Math.round(n));
+}
+
+function isOnXAxis(worldY: number): boolean {
+  return Math.abs(worldY) < yIter / 2 + 1e-9;
+}
+
+function isOnYAxis(worldX: number): boolean {
+  return Math.abs(worldX) < xIter / 2 + 1e-9;
+}
+
+function createPlane(): void {
+  const plane = document.getElementById("plane") as HTMLDivElement | null;
+  if (!plane) return;
+
+  const cols = gridColumnCount();
+  const rows = gridRowCount();
+
+  plane.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  plane.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+  for (let row = 0; row < rows; row++) {
+    const worldY = worldYAtRow(row);
+    for (let col = 0; col < cols; col++) {
+      const worldX = worldXAtCol(col);
+      const grid = document.createElement("div");
+
+      grid.classList.add("grid");
+      grid.dataset.col = String(col);
+      grid.dataset.row = String(row);
+
+      if (isOnXAxis(worldY) && isNearInteger(worldX)) {
+        grid.textContent = formatAxisLabel(worldX);
+        grid.classList.add("axis-label");
+      } else if (isOnYAxis(worldX) && isNearInteger(worldY)) {
+        grid.textContent = formatAxisLabel(worldY);
+        grid.classList.add("axis-label");
+      }
+
+      if (isOnXAxis(worldY)) {
+        grid.classList.add("axis-x");
+      }
+      if (isOnYAxis(worldX)) {
+        grid.classList.add("axis-y");
+      }
+
+      plane.append(grid);
+    }
+  }
+}
+
+export {
+  createPlane,
+  gridColumnCount,
+  gridRowCount,
+  worldXAtCol,
+  rowAtWorldY,
+  snapWorldY,
+  xIter,
+  yIter,
+};
