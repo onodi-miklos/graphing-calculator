@@ -1,9 +1,35 @@
-const WORLD_X_MIN = -10;
-const WORLD_X_MAX = 10;
-const WORLD_Y_MIN = -10;
-const WORLD_Y_MAX = 10;
-const xIter = 0.2;
-const yIter = 0.2;
+let WORLD_X_MIN: number;
+let WORLD_X_MAX: number;
+let WORLD_Y_MIN: number;
+let WORLD_Y_MAX: number;
+let xIter: number;
+let yIter: number;
+
+function setSizes(size: number, iteratition: number): void {
+  WORLD_X_MAX = size;
+  WORLD_X_MIN = -size;
+  WORLD_Y_MAX = size;
+  WORLD_Y_MIN = -size;
+  xIter = iteratition;
+  yIter = iteratition;
+}
+function setPlaneSize(): void {
+  let planeSize: number | null = Math.round(Number(window.prompt("Set plane size (number)")));
+
+  if (!planeSize){planeSize=10}
+
+  if (planeSize <= 10) {
+    setSizes(planeSize, 0.2);
+  } else if (planeSize <= 15) {
+    setSizes(planeSize, 0.5);
+  } else if (planeSize <= 35) {
+    setSizes(planeSize, 1);
+  } else {
+    window.alert("too big plane");
+    setPlaneSize()
+  }
+}
+setPlaneSize()
 
 function gridColumnCount(): number {
   return Math.round((WORLD_X_MAX - WORLD_X_MIN) / xIter) + 1;
@@ -68,7 +94,7 @@ function createPlane(): void {
       grid.classList.add("grid");
       grid.dataset.col = String(col);
       grid.dataset.row = String(row);
-
+      0;
       if (isOnXAxis(worldY) && isNearInteger(worldX)) {
         grid.textContent = formatAxisLabel(worldX);
         grid.classList.add("axis-label");
