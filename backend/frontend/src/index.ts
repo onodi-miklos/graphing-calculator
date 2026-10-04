@@ -5,7 +5,7 @@ import {
   worldXAtCol,
   rowAtWorldY,
   snapWorldY,
-} from "./plane.js";
+} from "./createWorld.js";
 import { evaluateExpression, isValidExpression } from "./calculate.js";
 
 createPlane();

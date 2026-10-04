@@ -1,20 +1,10 @@
-let WORLD_X_MIN: number;
-let WORLD_X_MAX: number;
-let WORLD_Y_MIN: number;
-let WORLD_Y_MAX: number;
-let xIter: number;
-let yIter: number;
+import { world } from "./world.js";
 
-WORLD_X_MIN = -10
-WORLD_X_MAX = 10
-WORLD_Y_MIN = -10
-WORLD_Y_MAX = 10
-xIter = 0.2
-yIter = 0.2
+const { WORLD_X_MIN, WORLD_X_MAX, WORLD_Y_MIN, WORLD_Y_MAX, xIter, yIter } = world;
 
 // function setSizes(size: number, iteratition: number): void {
 //   WORLD_X_MAX = size;
-//   WORLD_X_MIN = -size;
+//   WORLD_X_MIN = -size;world.
 //   WORLD_Y_MAX = size;
 //   WORLD_Y_MIN = -size;
 //   xIter = iteratition;
